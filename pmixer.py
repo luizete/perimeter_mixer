@@ -1,127 +1,51 @@
-#!/usr/bin/env python
-# coding: utf-8
+import sys
 
-# In[1]:
+def create_blocks(splitted_gcode):
+    
+    lines = []
+    blocks = []
 
+    for index, line in enumerate(splitted_gcode):
+        if (";LAYER_CHANGE" in line):
+            lines.append(index)
+        
+    last_line = len(splitted_gcode)
+    last_layer_change = lines[len(lines) - 1]
+    first_layer_change = lines[0]
+    
+    for i in range(len(lines)):
+        new_block = []
+        if (i + 1 < len(lines)):
+            for j in range(lines[i],lines[i+1]):
+                new_block.append(splitted_gcode[j])
+        else:
+            for j in range(last_layer_change,last_line - 1):
+                new_block.append(splitted_gcode[j])
+        blocks.append(new_block)
 
-ef_file = open("external_first.gcode", "r")
-ef = ef_file.read()
-ef_split = ef.splitlines()
+    return (blocks, first_layer_change, last_line, last_layer_change)
 
+ep_filename = sys.argv[1] #"external_first.gcode"
+ip_filename = sys.argv[2] #"internal_first.gcode"
+out_filename = sys.argv[3] #"merged.gcode"
 
-# In[2]:
+ep = open(ep_filename, "r").read().splitlines()
+ip = open(ip_filename, "r").read().splitlines()
 
-
-ef_lines = []
-for index, line in enumerate(ef_split):
-    if (";LAYER_CHANGE" in line):
-        ef_lines.append(index)
-ef_split_last_line = len(ef_split)
-ef_lines_last_layer_change=ef_lines[len(ef_lines) - 1]
-ef_lines_first_layer_change=ef_lines[0]
-
-
-# In[3]:
-
-
-ef_blocks = []
-for i in range(len(ef_lines)):
-    new_block = []
-    if (i + 1 < len(ef_lines)):
-        for j in range(ef_lines[i],ef_lines[i+1]):
-            new_block.append(ef_split[j])
-    else:
-        for j in range(ef_lines_last_layer_change,ef_split_last_line - 1):
-            new_block.append(ef_split[j])
-    ef_blocks.append(new_block)
-
-
-# In[4]:
-
-
-#################################
-
-
-# In[5]:
-
-
-if_file = open("internal_first.gcode", "r")
-iff = if_file.read()
-if_split = iff.splitlines()
-
-
-# In[6]:
-
-
-if_lines = []
-for index, line in enumerate(if_split):
-    if (";LAYER_CHANGE" in line):
-        if_lines.append(index)
-if_split_last_line = len(if_split)
-if_lines_last_layer_change=if_lines[len(if_lines) - 1]
-
-
-# In[7]:
-
-
-if_blocks = []
-for i in range(len(if_lines)):
-    new_block = []
-    if (i + 1 < len(if_lines)):
-        for j in range(if_lines[i],if_lines[i+1]):
-            new_block.append(if_split[j])
-    else:
-        for j in range(if_lines_last_layer_change,if_split_last_line - 1):
-            new_block.append(if_split[j])
-    if_blocks.append(new_block)
-
-
-# In[8]:
-
+ep_blocks, ep_first_layer_change, ep_last_line, ep_last_layer_change = create_blocks(ep)
+ip_blocks, ip_first_layer_change, ip_last_line, ip_last_layer_change = create_blocks(ip)
 
 merged_blocks = []
-
-
-# In[9]:
-
-
-for i in range(len(ef_blocks)):
-    #print (ef_blocks[i])
-    if (";TYPE:Overhang perimeter" in ef_blocks[i]):
-        merged_blocks.append(if_blocks[i])
+for i in range(len(ep_blocks)):
+    if (";TYPE:Overhang perimeter" in ep_blocks[i]):
+        merged_blocks.append(ip_blocks[i])
     else:
-        merged_blocks.append(ef_blocks[i])
+        merged_blocks.append(ep_blocks[i])
 
-
-# In[10]:
-
-
-out_file = open("merged.gcode", "w")
-
-
-# In[11]:
-
-
-for i in range(0,ef_lines_first_layer_change):
-    out_file.write(if_split[i] + "\n" )
-
-
-# In[12]:
-
-
+out_file = open(out_filename, "w")
+for i in range(0,ep_first_layer_change):
+    out_file.write(ep[i] + "\n")
 for block in merged_blocks:
     for line in block:
         out_file.write(line + "\n")
-
-
-# In[13]:
-
-
 out_file.close()
-
-
-# In[ ]:
-
-
-
-
