@@ -9,4 +9,4 @@ It is needed to slice the plate two times: The first one, with the option Extern
 To detect whether a layer has an overhang, the script checks for the presence of the string ";TYPE:Overhang perimeter" at least once in the layer's g-code.
 
 ## Disclaimer
-I still haven't tested this code! Also, 
+I still haven't tested this code!
