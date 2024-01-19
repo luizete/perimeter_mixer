@@ -1,12 +1,20 @@
 # Perimeter Mixer
-Get better prints with mixed perimeters order! Use internal perimeters first only when necessary.
+Achieve better prints with mixed perimeters order! Only use internal perimeters first if necessary.
 
 ## Theory
-Generally, enabling the option External Perimeter First on SuperSlicer grants better external layers quality and layer stacking consistency on some prints. However, enabling it may interfere with overhangs. Thus, by printing layers without overhangs with this option enabled, we grant a better print without countersides.
+In general, enabling the External Perimeters First option in SuperSlicer will result in better quality external layers for some prints. However, enabling this option can affect overhangs. So if you print layers without overhangs with this option enabled, you will get a better print with no opposing sides.
 
 ## How it works
-It is needed to slice the plate two times: The first one, with the option External Perimeter First enabled, and the second one with it disabled. This script merges both g-codes, using the first one as the principal, replacing layers with overhang by it respective g-code present on the second file.
-To detect whether a layer has an overhang, the script checks for the presence of the string ";TYPE:Overhang perimeter" at least once in the layer's g-code.
+It is necessary to slice the plate twice: The first time with the External margin first option enabled and the second time with the option disabled. This script merges both g-codes, using the first one as a base and replacing layers with overhang with the corresponding g-code in the second file. To detect whether a layer has an overhang, the script checks whether the string ";TYPE:Overhang perimeter" occurs at least once in the layer's g-code.
+
+## How to use it
+Just run it with Python 3:
+
+```python3 pmixer.py file1 file2 outfile```
+
+- file1 must be the g-code sliced with the External Perimeters First option enabled. 
+- file2 must be the g-code sliced with the External Perimeters First option disabled.
+- outfile is the generated mixed g-code filename.
 
 ## Disclaimer
-I still haven't tested this code!
+I have not tested this code yet!
