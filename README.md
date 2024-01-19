@@ -14,7 +14,7 @@ Just run it with Python 3:
 
 - *file1* must be the g-code that was sliced with the option "External perimeters first" enabled
 - *file2* must be the g-code that was sliced with the option "External perimeters first" disabled
-- *outfile* is the file name for\ the generated mixed g-code output
+- *outfile* is the filename for the generated mixed g-code output
 
 ## To Do
 - Improve code performance and readability
