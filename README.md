@@ -10,7 +10,7 @@ It is necessary to slice the plate twice: The first time with the External margi
 ## How to use it
 Just run it with Python 3:
 
-```python3 pmixer.py *file1* *file2* *outfile*```
+```python3 pmixer.py file1 file2 outfile```
 
 - *file1* must be the g-code that was sliced with the option "External perimeters first" enabled
 - *file2* must be the g-code that was sliced with the option "External perimeters first" disabled
