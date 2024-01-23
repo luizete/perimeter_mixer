@@ -21,5 +21,4 @@ Just run it with Python 3:
 - Add exception handling
 - Add threshold for overhangs
 
-## Disclaimer
-I have not tested this code yet!
+## Results
